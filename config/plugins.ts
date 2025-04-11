@@ -1,4 +1,8 @@
 export default ({ env }) => ({
+  "strapi-appointments": {
+    enabled: true,
+    resolve: "./src/plugins/strapi-appointments"
+  },
   upload: {
     config: {
       provider: "aws-s3",
