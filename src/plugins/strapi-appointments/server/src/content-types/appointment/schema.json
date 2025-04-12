@@ -1,14 +1,80 @@
-
 {
   "kind": "collectionType",
   "collectionName": "appointments",
   "info": {
     "singularName": "appointment",
     "pluralName": "appointments",
-    "displayName": "Appointment"
+    "displayName": "Appointment",
+    "description": "Manage service appointments with clients"
   },
   "options": {
-    "comment": ""
+    "draftAndPublish": false,
+    "comment": "Appointment management system"
   },
-  "attributes": {}
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "client": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "provider": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "admin::user"
+    },
+    "service": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::strapi-appointments.service"
+    },
+    "serviceVariant": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::strapi-appointments.service-variant"
+    },
+    "date": {
+      "type": "datetime",
+      "required": true,
+      "configurable": false
+    },
+    "scheduledDuration": {
+      "type": "integer",
+      "required": true,
+      "min": 15,
+      "max": 480,
+      "description": "Duration in minutes"
+    },
+    "actualDuration": {
+      "type": "integer",
+      "min": 0,
+      "max": 480,
+      "description": "Actual duration in minutes"
+    },
+    "extras": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::strapi-appointments.service-extra"
+    },
+    "basePrice": {
+      "type": "decimal",
+      "required": true,
+      "min": 0,
+      "configurable": false
+    },
+    "finalPrice": {
+      "type": "decimal",
+      "required": true,
+      "min": 0,
+      "configurable": false
+    },
+    "notes": {
+      "type": "text",
+      "maxLength": 1000
+    }
+  }
 }

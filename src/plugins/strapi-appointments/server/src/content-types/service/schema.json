@@ -10,5 +10,10 @@
   "options": {
     "comment": ""
   },
-  "attributes": {}
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    }
+  }
 }

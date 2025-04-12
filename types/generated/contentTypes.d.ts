@@ -610,25 +610,85 @@ export interface PluginStrapiAppointmentsAppointment
   extends Struct.CollectionTypeSchema {
   collectionName: 'appointments';
   info: {
+    description: 'Manage service appointments with clients';
     displayName: 'Appointment';
     pluralName: 'appointments';
     singularName: 'appointment';
   };
   options: {
-    comment: '';
+    comment: 'Appointment management system';
     draftAndPublish: false;
   };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
   attributes: {
+    actualDuration: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 480;
+          min: 0;
+        },
+        number
+      >;
+    basePrice: Schema.Attribute.Decimal &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 0;
+        },
+        number
+      >;
+    client: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    date: Schema.Attribute.DateTime & Schema.Attribute.Required;
+    extras: Schema.Attribute.Relation<
+      'manyToMany',
+      'plugin::strapi-appointments.service-extra'
+    >;
+    finalPrice: Schema.Attribute.Decimal &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 0;
+        },
+        number
+      >;
+    locale: Schema.Attribute.String;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'plugin::strapi-appointments.appointment'
-    > &
-      Schema.Attribute.Private;
+    >;
+    notes: Schema.Attribute.Text &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 1000;
+      }>;
+    provider: Schema.Attribute.Relation<'manyToOne', 'admin::user'>;
     publishedAt: Schema.Attribute.DateTime;
+    scheduledDuration: Schema.Attribute.Integer &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 480;
+          min: 15;
+        },
+        number
+      >;
+    service: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::strapi-appointments.service'
+    >;
+    serviceVariant: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::strapi-appointments.service-variant'
+    >;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -657,6 +717,7 @@ export interface PluginStrapiAppointmentsService
       'plugin::strapi-appointments.service'
     > &
       Schema.Attribute.Private;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -680,12 +741,15 @@ export interface PluginStrapiAppointmentsServiceExtra
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    description: Schema.Attribute.Text & Schema.Attribute.Required;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'plugin::strapi-appointments.service-extra'
     > &
       Schema.Attribute.Private;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    price: Schema.Attribute.Decimal & Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -715,6 +779,7 @@ export interface PluginStrapiAppointmentsServiceVariant
       'plugin::strapi-appointments.service-variant'
     > &
       Schema.Attribute.Private;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
