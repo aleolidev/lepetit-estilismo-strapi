@@ -1,0 +1,14 @@
+
+{
+  "kind": "collectionType",
+  "collectionName": "service_extras",
+  "info": {
+    "singularName": "service-extra",
+    "pluralName": "service-extras",
+    "displayName": "Service Extra"
+  },
+  "options": {
+    "comment": ""
+  },
+  "attributes": {}
+}
