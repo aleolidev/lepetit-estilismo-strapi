@@ -1,0 +1,34 @@
+{
+    "kind": "collectionType",
+    "collectionName": "rates",
+    "info": {
+      "singularName": "rate",
+      "pluralName": "rates",
+      "displayName": "Rate",
+      "description": "Dynamic service rates"
+    },
+    "options": {
+      "draftAndPublish": false
+    },
+    "pluginOptions": {
+      "content-manager": { "visible": true },
+      "content-type-builder": { "visible": true }
+    },
+    "attributes": {
+      "price": {
+        "type": "decimal",
+        "required": true
+      },
+      "service": {
+        "type": "relation",
+        "relation": "manyToOne",
+        "target": "plugin::strapi-appointments.service",
+        "inversedBy": "rates"
+      },
+      "conditions": {
+        "type": "dynamiczone",
+        "components": ["pricing.price-condition"]
+      }
+    }
+  }
+  

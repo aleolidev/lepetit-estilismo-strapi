@@ -1,19 +1,30 @@
-
 {
-  "kind": "collectionType",
-  "collectionName": "services",
-  "info": {
-    "singularName": "service",
-    "pluralName": "services",
-    "displayName": "Service"
-  },
-  "options": {
-    "comment": ""
-  },
-  "attributes": {
-    "name": {
-      "type": "string",
-      "required": true
+    "kind": "collectionType",
+    "collectionName": "services",
+    "info": {
+      "singularName": "service",
+      "pluralName": "services",
+      "displayName": "Service",
+      "description": "Available services for appointments"
+    },
+    "options": {
+      "draftAndPublish": false
+    },
+    "pluginOptions": {
+      "content-manager": { "visible": true },
+      "content-type-builder": { "visible": true }
+    },
+    "attributes": {
+      "name": {
+        "type": "string",
+        "required": true
+      },
+      "rates": {
+        "type": "relation",
+        "relation": "oneToMany",
+        "target": "plugin::strapi-appointments.rate",
+        "mappedBy": "service"
+      }
     }
   }
-}
+  

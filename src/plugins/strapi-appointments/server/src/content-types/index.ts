@@ -1,11 +1,7 @@
-import appointment from "./appointment";
+import rate from "./rate";
 import service from "./service";
-import serviceExtra from "./service-extra";
-import serviceVariant from "./service-variant";
 
 export default {
-    appointment,
+    rate,
     service,
-    "service-extra": serviceExtra,
-    "service-variant": serviceVariant,
 };
