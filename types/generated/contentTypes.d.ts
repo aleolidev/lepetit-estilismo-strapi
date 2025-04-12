@@ -771,6 +771,35 @@ export interface PluginReviewWorkflowsWorkflowStage
   };
 }
 
+export interface PluginStrapiAppointmentsAppointment
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'appointments';
+  info: {
+    displayName: 'Appointment Foo 2';
+    pluralName: 'appointments';
+    singularName: 'appointment';
+  };
+  options: {
+    comment: '';
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'plugin::strapi-appointments.appointment'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface PluginUploadFile extends Struct.CollectionTypeSchema {
   collectionName: 'files';
   info: {
@@ -1053,6 +1082,7 @@ declare module '@strapi/strapi' {
       'plugin::i18n.locale': PluginI18NLocale;
       'plugin::review-workflows.workflow': PluginReviewWorkflowsWorkflow;
       'plugin::review-workflows.workflow-stage': PluginReviewWorkflowsWorkflowStage;
+      'plugin::strapi-appointments.appointment': PluginStrapiAppointmentsAppointment;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;
       'plugin::users-permissions.permission': PluginUsersPermissionsPermission;

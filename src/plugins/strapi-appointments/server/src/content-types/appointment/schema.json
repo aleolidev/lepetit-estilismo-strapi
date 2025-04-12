@@ -1,0 +1,14 @@
+
+{
+  "kind": "collectionType",
+  "collectionName": "appointments",
+  "info": {
+    "singularName": "appointment",
+    "pluralName": "appointments",
+    "displayName": "Appointment"
+  },
+  "options": {
+    "comment": ""
+  },
+  "attributes": {}
+}
