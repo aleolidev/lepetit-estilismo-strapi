@@ -775,7 +775,7 @@ export interface PluginStrapiAppointmentsAppointment
   extends Struct.CollectionTypeSchema {
   collectionName: 'appointments';
   info: {
-    displayName: 'Appointment Foo 2';
+    displayName: 'Appointment';
     pluralName: 'appointments';
     singularName: 'appointment';
   };
