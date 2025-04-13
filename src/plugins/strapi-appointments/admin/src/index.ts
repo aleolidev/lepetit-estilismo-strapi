@@ -1,21 +1,48 @@
-import { getTranslation } from './utils/getTranslation';
 import { PLUGIN_ID } from './pluginId';
 import { Initializer } from './components/Initializer';
-import { PluginIcon } from './components/PluginIcon';
+import { CalendarIcon, PlusIcon, SettingsIcon } from './components/icons';
 
 export default {
   register(app: any) {
     app.addMenuLink({
-      to: `plugins/${PLUGIN_ID}`,
-      icon: PluginIcon,
+      to: `plugins/${PLUGIN_ID}/calendar`,
+      icon: CalendarIcon,
       intlLabel: {
-        id: `${PLUGIN_ID}.plugin.name`,
-        defaultMessage: PLUGIN_ID,
+        id: `${PLUGIN_ID}.plugin.calendar`,
+        defaultMessage: 'Calendar',
       },
       Component: async () => {
-        const { App } = await import('./pages/App');
+        const { CalendarPage } = await import('./pages/calendar');
 
-        return App;
+        return CalendarPage;
+      },
+    });
+
+    app.addMenuLink({
+      to: `plugins/${PLUGIN_ID}/new-appointment`,
+      icon: PlusIcon,
+      intlLabel: {
+        id: `${PLUGIN_ID}.plugin.new-appointment`,
+        defaultMessage: 'New Appointment',
+      },
+      Component: async () => {
+        const { NewAppointmentPage } = await import('./pages/new-appointment');
+
+        return NewAppointmentPage;
+      },
+    });
+
+    app.addMenuLink({
+      to: `plugins/${PLUGIN_ID}/settings`,
+      icon: SettingsIcon,
+      intlLabel: {
+        id: `${PLUGIN_ID}.plugin.settings`,
+        defaultMessage: 'Settings',
+      },
+      Component: async () => {
+        const { SettingsPage } = await import('./pages/settings');
+
+        return SettingsPage;
       },
     });
 

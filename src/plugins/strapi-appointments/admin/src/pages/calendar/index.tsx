@@ -1,9 +1,9 @@
 import { Main } from '@strapi/design-system';
 import { useIntl } from 'react-intl';
+import { getTranslation } from '../../utils/getTranslation';
 
-import { getTranslation } from '../utils/getTranslation';
 
-const HomePage = () => {
+const CalendarPage = () => {
   const { formatMessage } = useIntl();
 
   return (
@@ -13,4 +13,4 @@ const HomePage = () => {
   );
 };
 
-export { HomePage };
+export { CalendarPage };
