@@ -1,0 +1,41 @@
+{
+    "kind": "collectionType",
+    "collectionName": "staffs",
+    "info": {
+      "singularName": "staff",
+      "pluralName": "staffs",
+      "displayName": "Staff",
+      "description": "Staff members"
+    },
+    "options": {
+      "draftAndPublish": false
+    },
+    "pluginOptions": {
+      "content-manager": { "visible": true },
+      "content-type-builder": { "visible": true }
+    },
+    "attributes": {
+      "name": {
+        "type": "string",
+        "required": true
+      },
+      "email": {
+        "type": "email",
+        "required": true
+      },
+      "phone": {
+        "type": "string",
+        "required": true
+      },
+      "image": {
+        "type": "media",
+        "required": true
+      },
+      "user": {
+        "type": "relation",
+        "relation": "oneToOne",
+        "target": "admin::user"
+      }
+    }
+  }
+  
