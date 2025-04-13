@@ -681,10 +681,6 @@ export interface PluginStrapiAppointmentsService
       Schema.Attribute.Private;
     name: Schema.Attribute.String & Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
-    rates: Schema.Attribute.Relation<
-      'oneToMany',
-      'plugin::strapi-appointments.rate'
-    >;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

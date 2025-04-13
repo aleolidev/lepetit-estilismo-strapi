@@ -22,8 +22,7 @@
       "service": {
         "type": "relation",
         "relation": "manyToOne",
-        "target": "plugin::strapi-appointments.service",
-        "inversedBy": "rates"
+        "target": "plugin::strapi-appointments.service"
       },
       "conditions": {
         "type": "dynamiczone",

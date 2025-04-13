@@ -18,12 +18,6 @@
       "name": {
         "type": "string",
         "required": true
-      },
-      "rates": {
-        "type": "relation",
-        "relation": "oneToMany",
-        "target": "plugin::strapi-appointments.rate",
-        "mappedBy": "service"
       }
     }
   }
