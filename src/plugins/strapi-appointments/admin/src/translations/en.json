@@ -1,1 +1,6 @@
-{}
+{
+  "strapi-appointments.plugin.name": "Appointments",
+  "strapi-appointments.select.staff": "Select Staff",
+  "strapi-appointments.select.all": "All Staff",
+  "strapi-appointments.locale": "en"
+}
