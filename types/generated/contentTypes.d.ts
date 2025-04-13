@@ -606,6 +606,61 @@ export interface PluginReviewWorkflowsWorkflowStage
   };
 }
 
+export interface PluginStrapiAppointmentsAppointment
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'appointments';
+  info: {
+    description: 'Appointments management for services';
+    displayName: 'Appointment';
+    pluralName: 'appointments';
+    singularName: 'appointment';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  pluginOptions: {
+    'content-manager': {
+      visible: true;
+    };
+    'content-type-builder': {
+      visible: true;
+    };
+  };
+  attributes: {
+    actualDuration: Schema.Attribute.Integer;
+    client: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::strapi-appointments.client'
+    > &
+      Schema.Attribute.Required;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    date: Schema.Attribute.DateTime & Schema.Attribute.Required;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'plugin::strapi-appointments.appointment'
+    > &
+      Schema.Attribute.Private;
+    notes: Schema.Attribute.Text;
+    publishedAt: Schema.Attribute.DateTime;
+    service: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::strapi-appointments.rate'
+    > &
+      Schema.Attribute.Required;
+    staff: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::strapi-appointments.staff'
+    > &
+      Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface PluginStrapiAppointmentsClient
   extends Struct.CollectionTypeSchema {
   collectionName: 'clients';
@@ -682,6 +737,7 @@ export interface PluginStrapiAppointmentsRate
       'plugin::strapi-appointments.rate'
     > &
       Schema.Attribute.Private;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
     price: Schema.Attribute.Decimal & Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
     service: Schema.Attribute.Relation<
@@ -1053,6 +1109,7 @@ declare module '@strapi/strapi' {
       'plugin::i18n.locale': PluginI18NLocale;
       'plugin::review-workflows.workflow': PluginReviewWorkflowsWorkflow;
       'plugin::review-workflows.workflow-stage': PluginReviewWorkflowsWorkflowStage;
+      'plugin::strapi-appointments.appointment': PluginStrapiAppointmentsAppointment;
       'plugin::strapi-appointments.client': PluginStrapiAppointmentsClient;
       'plugin::strapi-appointments.rate': PluginStrapiAppointmentsRate;
       'plugin::strapi-appointments.service': PluginStrapiAppointmentsService;

@@ -1,0 +1,48 @@
+{
+  "kind": "collectionType",
+  "collectionName": "appointments",
+  "info": {
+    "singularName": "appointment",
+    "pluralName": "appointments",
+    "displayName": "Appointment",
+    "description": "Appointments management for services"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "content-manager": { "visible": true },
+    "content-type-builder": { "visible": true }
+  },
+  "attributes": {
+    "client": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::strapi-appointments.client",
+      "required": true
+    },
+    "staff": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::strapi-appointments.staff",
+      "required": true
+    },
+    "service": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::strapi-appointments.rate",
+      "required": true
+    },
+    "date": {
+      "type": "datetime",
+      "required": true
+    },
+    "actualDuration": {
+      "type": "integer",
+      "description": "Actual duration in minutes"
+    },
+    "notes": {
+      "type": "text"
+    }
+  }
+} 

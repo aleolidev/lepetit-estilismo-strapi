@@ -15,6 +15,10 @@
       "content-type-builder": { "visible": true }
     },
     "attributes": {
+      "name": {
+        "type": "string",
+        "required": true
+      },
       "price": {
         "type": "decimal",
         "required": true
