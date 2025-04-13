@@ -627,7 +627,8 @@ export interface PluginStrapiAppointmentsRate
     };
   };
   attributes: {
-    conditions: Schema.Attribute.DynamicZone<['pricing.price-condition']>;
+    conditions: Schema.Attribute.DynamicZone<['rate.price-condition']> &
+      Schema.Attribute.Required;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -642,7 +643,9 @@ export interface PluginStrapiAppointmentsRate
     service: Schema.Attribute.Relation<
       'manyToOne',
       'plugin::strapi-appointments.service'
-    >;
+    > &
+      Schema.Attribute.Required;
+    timeEstimation: Schema.Attribute.Decimal;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

@@ -6,6 +6,5 @@ export const registerComponents = (strapi: Core.Strapi) => {
 };
 
 const registerPriceCondition = (strapi: Core.Strapi) => {
-    strapi.components['pricing.price-condition'] = priceCondition as any;
+    strapi.components['rate.price-condition'] = priceCondition as any;
 }
-    

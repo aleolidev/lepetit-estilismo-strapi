@@ -19,14 +19,19 @@
         "type": "decimal",
         "required": true
       },
+      "timeEstimation": {
+        "type": "decimal"
+      },
       "service": {
         "type": "relation",
         "relation": "manyToOne",
-        "target": "plugin::strapi-appointments.service"
+        "target": "plugin::strapi-appointments.service",
+        "required": true
       },
       "conditions": {
         "type": "dynamiczone",
-        "components": ["pricing.price-condition"]
+        "components": ["rate.price-condition"],
+        "required": true
       }
     }
   }

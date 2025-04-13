@@ -1,7 +1,7 @@
 import type { Schema, Struct } from '@strapi/strapi';
 
-export interface PricingPriceCondition extends Struct.ComponentSchema {
-  collectionName: 'components_pricing_price_conditions';
+export interface RatePriceCondition extends Struct.ComponentSchema {
+  collectionName: 'components_rate_price_conditions';
   info: {
     description: 'Criterio de precio din\u00E1mico';
     displayName: 'PriceCondition';
@@ -16,7 +16,7 @@ export interface PricingPriceCondition extends Struct.ComponentSchema {
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
-      'pricing.price-condition': PricingPriceCondition;
+      'rate.price-condition': RatePriceCondition;
     }
   }
 }

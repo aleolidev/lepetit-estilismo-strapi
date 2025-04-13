@@ -1,5 +1,10 @@
 export const priceCondition = {
-  collectionName: "components_pricing_price_conditions",
+  uid: "rate.price-condition",
+  category: "rate",
+  modelType: "component",
+  modelName: "price-condition",
+  globalId: "ComponentRatePriceCondition",
+  collectionName: "components_rate_price_conditions",
   info: {
     displayName: "PriceCondition",
     icon: "dollar-sign",
@@ -16,9 +21,4 @@ export const priceCondition = {
       required: true,
     },
   },
-  uid: "pricing.price-condition",
-  category: "pricing",
-  modelType: "component",
-  modelName: "price-condition",
-  globalId: "ComponentPricingPriceCondition",
 };
