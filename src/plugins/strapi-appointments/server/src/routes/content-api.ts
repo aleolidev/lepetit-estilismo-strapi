@@ -8,4 +8,13 @@ export default [
       policies: [],
     },
   },
+  {
+    method: 'GET',
+    path: '/appointments/',
+    // name of the controller file & the method.
+    handler: 'controller.index',
+    config: {
+      policies: [],
+    },
+  },
 ];
