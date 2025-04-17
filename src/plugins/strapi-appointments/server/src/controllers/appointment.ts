@@ -32,22 +32,18 @@ export interface IAppointmentControllerReturn {
 }
 
 export default ({ strapi }: { strapi: Core.Strapi }) => ({
-  async find(ctx: any): Promise<IAppointmentControllerReturn> {
+  async find(ctx: any): Promise<any> {
     try {
       const { query } = ctx;
 
       // Get all appointments with their relations
-      const appointments = (await strapi.entityService.findMany(
-        'plugin::strapi-appointments.appointment',
-        {
-          ...query,
+      const appointments = await strapi
+        .documents('plugin::strapi-appointments.appointment')
+        .findMany({
           populate: {
             client: true,
-            staff: true,
-            service: true,
           },
-        }
-      )) as IAppointment[];
+        });
 
       return {
         data: appointments,

@@ -1,106 +1,78 @@
 import type { Core } from '@strapi/types';
 
-export interface IStaff {
-  id: number;
-  name: string;
-  email: string;
-  phone: string;
-  image: {
-    id: number;
-    url: string;
-    formats?: any;
-  };
-  user?: {
-    id: number;
-    username: string;
-    email: string;
-  };
-}
-
-export interface IAppointment {
-  id: number;
-  client: {
-    id: number;
-    name: string;
-    email: string;
-    phone: string;
-  };
-  service: {
-    id: number;
-    name: string;
-  };
-  date: string;
-  actualDuration: number;
-  notes: string;
-}
-
-export interface IStaffWithAppointments extends IStaff {
-  appointments: IAppointment[];
-}
-
-export interface IStaffControllerReturn {
-  data: IStaff[];
-}
-
-export interface IStaffWithAppointmentsReturn {
-  data: IStaffWithAppointments[];
-}
-
 export default ({ strapi }: { strapi: Core.Strapi }) => ({
-  async find(ctx: any): Promise<IStaffControllerReturn> {
+  async find(ctx: any): Promise<any> {
     try {
       const { query } = ctx;
-
-      // Get all staff members with their relations
-      const staff = (await strapi.entityService.findMany('plugin::strapi-appointments.staff', {
+      const staff = await strapi.documents('plugin::strapi-appointments.staff').findMany({
         ...query,
         populate: {
           image: true,
           user: true,
         },
-      })) as IStaff[];
+      });
 
-      return {
-        data: staff,
-      };
+      // NOTE: We need to manually filter out the user fields because the populate fields option
+      return staff.map((staffMember) => {
+        const user = staffMember.user;
+
+        return {
+          ...staffMember,
+          user: {
+            id: user.id,
+            documentId: user.documentId,
+            firstname: user.firstname,
+            lastname: user.lastname,
+            username: user.username,
+            email: user.email,
+          },
+        };
+      });
     } catch (error) {
+      console.log(error);
       ctx.throw(500, 'Error fetching staff members');
     }
   },
 
-  async findWithAppointments(ctx: any): Promise<IStaffWithAppointmentsReturn> {
+  async findWithAppointments(ctx: any): Promise<any> {
     try {
       const { query } = ctx;
 
       // Get all staff members with their relations
-      const staff = (await strapi.entityService.findMany('plugin::strapi-appointments.staff', {
+      const staff = await strapi.documents('plugin::strapi-appointments.staff').findMany({
         ...query,
         populate: {
           image: true,
           user: true,
         },
-      })) as IStaff[];
+      });
 
       // For each staff member, get their appointments
       const staffWithAppointments = await Promise.all(
         staff.map(async (staffMember) => {
-          const appointments = (await strapi.entityService.findMany(
-            'plugin::strapi-appointments.appointment',
-            {
+          const appointments = await strapi
+            .documents('plugin::strapi-appointments.appointment')
+            .findMany({
               filters: {
                 staff: staffMember.id,
               },
-              populate: {
-                client: true,
-                service: true,
-              },
-            }
-          )) as IAppointment[];
+              populate: { client: true, service: true },
+            });
+
+          const user = staffMember.user;
 
           return {
             ...staffMember,
+            user: {
+              id: user.id,
+              documentId: user.documentId,
+              firstname: user.firstname,
+              lastname: user.lastname,
+              username: user.username,
+              email: user.email,
+            },
             appointments: appointments || [],
-          } as IStaffWithAppointments;
+          };
         })
       );
 
