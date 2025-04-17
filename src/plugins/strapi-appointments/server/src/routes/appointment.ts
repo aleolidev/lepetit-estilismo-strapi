@@ -1,7 +1,12 @@
-/**
- *  router
- */
-
-import { factories } from '@strapi/strapi';
-
-export default factories.createCoreRouter('plugin::strapi-appointments.appointment');
+export default [
+  {
+    method: 'GET',
+    path: '/appointments',
+    handler: 'appointment.find',
+    config: {
+      policies: [],
+      auth: false,
+      prefix: '',
+    },
+  },
+];
