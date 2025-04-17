@@ -9,4 +9,14 @@ export default [
       prefix: '',
     },
   },
-]; 
+  {
+    method: 'GET',
+    path: '/staff-with-appointments',
+    handler: 'staff.findWithAppointments',
+    config: {
+      policies: [],
+      auth: false,
+      prefix: '',
+    },
+  },
+];
