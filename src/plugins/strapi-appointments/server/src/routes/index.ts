@@ -1,15 +1,16 @@
 import contentApi from './content-api';
 import staff from './staff';
 import appointment from './appointment';
+import rate from './rate';
 
 export default {
   'content-api': {
     type: 'content-api',
-    routes: contentApi,
+    routes: [...contentApi],
   },
   admin: {
     type: 'admin',
-    routes: [...staff, ...appointment],
+    routes: [...staff, ...appointment, ...rate],
   },
 };
 
