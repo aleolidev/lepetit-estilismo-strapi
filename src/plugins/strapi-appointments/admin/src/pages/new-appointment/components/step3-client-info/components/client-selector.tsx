@@ -195,7 +195,7 @@ const ClientSearchResults = ({
   if (searchText.length < 3) {
     return (
       <Box padding={4} textAlign="center">
-        <Typography>Type at least 3 characters to search</Typography>
+        <Typography textColor="neutral600">Type at least 3 characters to search</Typography>
       </Box>
     );
   }

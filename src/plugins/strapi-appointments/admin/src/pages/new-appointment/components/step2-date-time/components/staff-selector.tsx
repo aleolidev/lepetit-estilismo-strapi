@@ -17,7 +17,7 @@ export const StaffSelector = ({
   const { formatMessage } = useIntl();
 
   return (
-    <Box paddingBottom={4}>
+    <Box paddingBottom={4} style={{ width: '100%' }}>
       <SingleSelect
         label={formatMessage({
           id: getTranslation('select.staff'),

@@ -45,48 +45,39 @@ const Step2DateTimeContent = ({
   }
 
   return (
-    <Box padding={4} background="neutral0" hasRadius>
-      <Flex direction="column" gap={4}>
-        <Typography variant="delta">
-          {formatMessage({
-            id: getTranslation('step2.title'),
-            defaultMessage: 'Select Staff and Schedule Appointment',
-          })}
-        </Typography>
+    <>
+      <StaffSelector
+        staffMembers={staffMembers}
+        selectedStaff={selectedStaff}
+        onStaffChange={handleStaffChange}
+      />
 
-        <StaffSelector
-          staffMembers={staffMembers}
-          selectedStaff={selectedStaff}
-          onStaffChange={handleStaffChange}
+      {selectedStaff && (
+        <CalendarGrid
+          events={filteredEvents}
+          onDateClick={handleDateClick}
+          onEventDrop={handleEventDrop}
+          renderEventContent={renderEventContent}
         />
+      )}
 
-        {selectedStaff && (
-          <CalendarGrid
-            events={filteredEvents}
-            onDateClick={handleDateClick}
-            onEventDrop={handleEventDrop}
-            renderEventContent={renderEventContent}
-          />
-        )}
-
-        {newAppointmentEvent && (
-          <Box paddingTop={4}>
-            <Typography variant="pi">
-              Appointment scheduled for: {newAppointmentEvent.start.toLocaleString()}
-            </Typography>
-          </Box>
-        )}
-
-        <Box display="flex" justifyContent="space-between">
-          <Button variant="tertiary" onClick={onBack} size="L">
-            Back
-          </Button>
-          <Button onClick={onNext} disabled={!isAppointmentScheduled} size="L">
-            Next
-          </Button>
+      {newAppointmentEvent && (
+        <Box paddingTop={4}>
+          <Typography variant="pi">
+            Appointment scheduled for: {newAppointmentEvent.start.toLocaleString()}
+          </Typography>
         </Box>
-      </Flex>
-    </Box>
+      )}
+
+      <Box display="flex" justifyContent="space-between">
+        <Button variant="tertiary" onClick={onBack} size="L">
+          Back
+        </Button>
+        <Button onClick={onNext} disabled={!isAppointmentScheduled} size="L">
+          Next
+        </Button>
+      </Box>
+    </>
   );
 };
 

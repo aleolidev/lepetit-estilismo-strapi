@@ -60,16 +60,7 @@ export const CalendarGrid = ({
   };
 
   return (
-    <Box
-      background="neutral0"
-      shadow="filterShadow"
-      padding={[4]}
-      hasRadius
-      style={{
-        zIndex: 0,
-        position: 'relative',
-      }}
-    >
+    <Box>
       <style>{getCalendarStyles(theme)}</style>
       <FullCalendar
         ref={calendarRef}
