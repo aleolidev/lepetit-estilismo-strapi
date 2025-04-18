@@ -55,97 +55,91 @@ export const ClientSelector = () => {
     }
   };
 
-  // Render search results
-  const renderSearchResults = () => {};
-
   return (
     <Box paddingBottom={6}>
-      <Box padding={4} background="neutral0" shadow="tableShadow" hasRadius>
-        <Typography variant="delta" as="h2">
-          Client Information
-        </Typography>
-        <Box paddingTop={4}>
-          <Tabs.Root defaultValue="existing">
-            <Tabs.List aria-label="Client selection">
-              <Tabs.Trigger value="existing">Existing Client</Tabs.Trigger>
-              <Tabs.Trigger value="new">New Client</Tabs.Trigger>
-            </Tabs.List>
-            <Tabs.Content value="existing">
-              <Box padding={4}>
-                <Field.Root>
-                  <Field.Label>Search clients</Field.Label>
-                  <Searchbar
-                    value={searchText}
-                    onChange={handleSearchChange}
-                    onClear={() => setSearchText('')}
-                    placeholder="Search by name, phone or email..."
+      <Typography variant="delta" as="h2">
+        Client Information
+      </Typography>
+      <Box paddingTop={4}>
+        <Tabs.Root defaultValue="existing">
+          <Tabs.List aria-label="Client selection">
+            <Tabs.Trigger value="existing">Existing Client</Tabs.Trigger>
+            <Tabs.Trigger value="new">New Client</Tabs.Trigger>
+          </Tabs.List>
+          <Tabs.Content value="existing">
+            <Box padding={4}>
+              <Field.Root>
+                <Searchbar
+                  value={searchText}
+                  onChange={handleSearchChange}
+                  onClear={() => setSearchText('')}
+                  placeholder="Search by name, phone or email..."
+                />
+              </Field.Root>
+
+              {/* Search Results Container */}
+              <Box marginTop={4} hasRadius>
+                <ClientSearchResults
+                  selectedClient={selectedClient}
+                  isLoadingClients={isLoadingClients}
+                  clientError={clientError}
+                  clients={clients}
+                  searchText={searchText}
+                  handleSelectClient={handleSelectClient}
+                />
+              </Box>
+            </Box>
+          </Tabs.Content>
+          <Tabs.Content value="new">
+            <Box padding={4}>
+              <Flex direction="column" gap={4}>
+                <Field.Root required>
+                  <Field.Label>Name</Field.Label>
+                  <TextInput
+                    placeholder="Client name"
+                    value={newClient.name}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      handleNewClientChange('name', e.target.value)
+                    }
                   />
                 </Field.Root>
 
-                {/* Search Results Container */}
-                <Box marginTop={4} hasRadius>
-                  <ClientSearchResults
-                    selectedClient={selectedClient}
-                    isLoadingClients={isLoadingClients}
-                    clientError={clientError}
-                    clients={clients}
-                    searchText={searchText}
-                    handleSelectClient={handleSelectClient}
+                <Field.Root required>
+                  <Field.Label>Phone</Field.Label>
+                  <TextInput
+                    placeholder="Phone number"
+                    value={newClient.phone}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      handleNewClientChange('phone', e.target.value)
+                    }
                   />
+                </Field.Root>
+
+                <Field.Root>
+                  <Field.Label>Email</Field.Label>
+                  <TextInput
+                    placeholder="Email address"
+                    value={newClient.email}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      handleNewClientChange('email', e.target.value)
+                    }
+                  />
+                </Field.Root>
+
+                <Box display="flex" justifyContent="flex-end">
+                  <Button
+                    variant="default"
+                    onClick={handleCreateNewClient}
+                    disabled={!isNewClientValid}
+                    size="L"
+                  >
+                    Create Client
+                  </Button>
                 </Box>
-              </Box>
-            </Tabs.Content>
-            <Tabs.Content value="new">
-              <Box padding={4}>
-                <Flex direction="column" gap={4}>
-                  <Field.Root required>
-                    <Field.Label>Name</Field.Label>
-                    <TextInput
-                      placeholder="Client name"
-                      value={newClient.name}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                        handleNewClientChange('name', e.target.value)
-                      }
-                    />
-                  </Field.Root>
-
-                  <Field.Root required>
-                    <Field.Label>Phone</Field.Label>
-                    <TextInput
-                      placeholder="Phone number"
-                      value={newClient.phone}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                        handleNewClientChange('phone', e.target.value)
-                      }
-                    />
-                  </Field.Root>
-
-                  <Field.Root>
-                    <Field.Label>Email</Field.Label>
-                    <TextInput
-                      placeholder="Email address"
-                      value={newClient.email}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                        handleNewClientChange('email', e.target.value)
-                      }
-                    />
-                  </Field.Root>
-
-                  <Box display="flex" justifyContent="flex-end">
-                    <Button
-                      variant="default"
-                      onClick={handleCreateNewClient}
-                      disabled={!isNewClientValid}
-                      size="L"
-                    >
-                      Create Client
-                    </Button>
-                  </Box>
-                </Flex>
-              </Box>
-            </Tabs.Content>
-          </Tabs.Root>
-        </Box>
+              </Flex>
+            </Box>
+          </Tabs.Content>
+        </Tabs.Root>
       </Box>
     </Box>
   );

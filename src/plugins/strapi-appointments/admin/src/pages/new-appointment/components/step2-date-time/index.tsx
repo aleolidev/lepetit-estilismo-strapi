@@ -62,7 +62,7 @@ const Step2DateTimeContent = ({
       )}
 
       <Box paddingTop={4}>
-        <Flex display="flex" justifyContent="end" gap={2}>
+        <Flex justifyContent="flex-end" gap={2}>
           <Button variant="tertiary" onClick={onBack} size="L">
             Back
           </Button>

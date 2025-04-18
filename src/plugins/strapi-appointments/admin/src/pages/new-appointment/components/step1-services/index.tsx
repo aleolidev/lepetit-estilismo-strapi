@@ -74,7 +74,7 @@ const Step1Services = ({ data, onUpdate, onNext }: Step1ServicesProps) => {
 
       {/* Navigation buttons */}
       <Flex justifyContent="flex-end" marginTop={6}>
-        <Button onClick={onNext} disabled={!selectedRate}>
+        <Button onClick={onNext} disabled={!selectedRate} size="L">
           Next
         </Button>
       </Flex>

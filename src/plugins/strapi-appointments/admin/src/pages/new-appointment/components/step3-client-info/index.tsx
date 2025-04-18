@@ -4,6 +4,7 @@ import { ClientInfoProvider, useClientInfoContext } from './contexts/client-info
 import { ClientSelector } from './components/client-selector';
 import { NotesInput } from './components/notes-input';
 import { AppointmentSummary } from './components/appointment-summary';
+import { Divider } from '@strapi/design-system';
 
 interface Step3ClientInfoProps extends StepProps {
   onBack: () => void;
@@ -21,18 +22,22 @@ const Step3ClientInfoContent = ({ onBack }: Pick<Step3ClientInfoProps, 'onBack'>
       {/* Additional Notes Section */}
       <NotesInput />
 
+      <Box paddingTop={4} paddingBottom={6}>
+        <Divider />
+      </Box>
+
       {/* Appointment Summary Section */}
       <AppointmentSummary />
 
       {/* Button Section */}
-      <Box display="flex" justifyContent="space-between">
+      <Flex justifyContent="flex-end" gap={2}>
         <Button variant="tertiary" onClick={onBack} size="L">
           Back
         </Button>
-        <Button variant="success" onClick={onSubmitAppointment} disabled={!isStepComplete} size="L">
+        <Button variant="primary" onClick={onSubmitAppointment} disabled={!isStepComplete} size="L">
           Book Appointment
         </Button>
-      </Box>
+      </Flex>
     </Box>
   );
 };
