@@ -1,5 +1,5 @@
-import { Flex, Typography, Tooltip } from '@strapi/design-system';
-import { PriceTag, Clock } from '@strapi/icons';
+import { Flex, Typography, Grid } from '@strapi/design-system';
+import { PriceTag, Clock, ClockCounterClockwise } from '@strapi/icons';
 import { Rate } from '../../../contexts/services-context';
 import { useMemo } from 'react';
 import { Box } from '@strapi/design-system';
@@ -36,28 +36,41 @@ export const SelectedRateDisplay = ({ selectedRate }: SelectedRateDisplayProps) 
 
   return (
     <>
-      <Flex gap={6} marginTop={4} alignItems="center" justifyContent="center">
-        <Flex gap={2} alignItems="center">
-          <PriceTag fill="neutral400" />
-          <Typography variant="delta" textColor="neutral700">
-            {formattedTotalCost}
-          </Typography>
-        </Flex>
-
-        <Flex gap={2} alignItems="center">
-          <Clock fill="neutral400" />
-          <Typography variant="delta" textColor="neutral700">
-            {selectedRate.timeEstimation} min
-          </Typography>
-        </Flex>
-      </Flex>
-      <Box marginTop={1}>
-        <Flex justifyContent="center">
-          <Typography variant="pi" textColor="neutral300">
-            {formattedHourlyRate} per hour
-          </Typography>
-        </Flex>
-      </Box>
+      <Grid.Root gap={4}>
+        <Grid.Item s={12} m={6} col={4}>
+          <Flex gap={2} alignItems="center">
+            <PriceTag fill="neutral400" />
+            <Typography variant="delta" textColor="neutral700">
+              {formattedTotalCost}
+            </Typography>
+            <Typography variant="pi" textColor="neutral300">
+              Precio estimado
+            </Typography>
+          </Flex>
+        </Grid.Item>
+        <Grid.Item s={12} m={6} col={4}>
+          <Flex gap={2} alignItems="center">
+            <Clock fill="neutral400" />
+            <Typography variant="delta" textColor="neutral700">
+              {selectedRate.timeEstimation} min
+            </Typography>
+            <Typography variant="pi" textColor="neutral300">
+              Tiempo estimado
+            </Typography>
+          </Flex>
+        </Grid.Item>
+        <Grid.Item s={12} m={6} col={4}>
+          <Flex gap={2} alignItems="center">
+            <ClockCounterClockwise fill="neutral400" />
+            <Typography variant="delta" textColor="neutral700">
+              {formattedHourlyRate}
+            </Typography>
+            <Typography variant="pi" textColor="neutral300">
+              Precio por hora
+            </Typography>
+          </Flex>
+        </Grid.Item>
+      </Grid.Root>
     </>
   );
 };
