@@ -74,7 +74,8 @@
 
 /* Time grid */
 .fc .fc-timegrid-slot {
-  height: 3rem;
+  height: 4.5rem;
+  border-bottom: 0;
 }
 
 .fc .fc-timegrid-slot-label {
@@ -93,4 +94,4 @@
 
 .fc .fc-list-event:hover {
   background-color: var(--neutral-100);
-} 
+}

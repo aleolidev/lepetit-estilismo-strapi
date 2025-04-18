@@ -5,7 +5,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { useRef } from 'react';
 import { useTheme } from 'styled-components';
-import { getCalendarStyles } from '../styles/calendar';
+import { getCalendarStyles } from '../../../styles/calendar';
 import { CalendarEvent } from '../types';
 
 interface CalendarGridProps {

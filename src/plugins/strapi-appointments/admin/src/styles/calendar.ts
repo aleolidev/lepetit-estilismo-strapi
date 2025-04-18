@@ -3,6 +3,7 @@ import tinyColor from 'tinycolor2';
 export const getCalendarStyles = (theme: any) => {
   const primaryColor = theme.colors.primary600;
   const lightPrimaryColor = tinyColor(primaryColor).lighten().toString();
+  const disabledBackgroundColor = theme.colors.neutral200;
 
   return `
     :root {
@@ -17,6 +18,7 @@ export const getCalendarStyles = (theme: any) => {
       --fc-event-bg-color: ${primaryColor};
       --fc-event-text-color: ${theme.colors.neutral0};
       --fc-today-bg-color: ${tinyColor(primaryColor).setAlpha(0.1).toString()};
+      --fc-disabled-bg-color: ${disabledBackgroundColor};
     }
 
     .fc {
@@ -41,11 +43,11 @@ export const getCalendarStyles = (theme: any) => {
     }
 
     .fc-timegrid-slots tr {
-      height: 3.75em;
+      height: 5em;
     }
 
     .fc-daygrid-day-frame {
-      min-height: 10em !important;
+      min-height: 12em !important;
     }
 
     /* Event styling */
@@ -101,6 +103,37 @@ export const getCalendarStyles = (theme: any) => {
       max-height: 2.6em; /* Approximately 2 lines of text */
     }
 
+    /* Appointment badge */
+    .fc-event-badge {
+      background-color: ${theme.colors.danger100};
+      color: ${theme.colors.danger700};
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.8em;
+      font-weight: bold;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* Styling for new appointment in the appointment creation flow */
+    .fc-event[data-event-id="new-appointment"] {
+      background-color: ${theme.colors.primary600} !important;
+      border-color: ${theme.colors.primary600} !important;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2) !important;
+      cursor: move !important;
+    }
+
+    .fc-event[data-event-id="new-appointment"]:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+      transform: translateY(-1px) !important;
+      transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out !important;
+    }
+
+    /* Highlight available slots with a subtle background when hovering */
+    .fc-timegrid-col:hover .fc-timegrid-col-bg {
+      background-color: ${tinyColor(primaryColor).setAlpha(0.05).toString()} !important;
+    }
+
     /* Make sure events don't get cut off */
     .fc-timegrid-event-harness {
       overflow: visible !important;
@@ -145,6 +178,11 @@ export const getCalendarStyles = (theme: any) => {
       border-color: ${theme.colors.danger500} !important;
       border-top-color: transparent !important;
       border-bottom-color: transparent !important;
+    }
+
+    /* Make background events non-interactive */
+    .fc .fc-bg-event {
+      cursor: not-allowed !important;
     }
   `;
 };
