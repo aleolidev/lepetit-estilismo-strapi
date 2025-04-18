@@ -11,6 +11,7 @@ export interface ServiceVariant {
   price: number;
 }
 
+// Legacy Service interface - will be replaced by ApiService and ApiRate
 export interface Service {
   id: string;
   name: string;
@@ -19,6 +20,41 @@ export interface Service {
   price: number;
   variant?: string;
   variants?: ServiceVariant[];
+}
+
+// New API interfaces
+export interface ApiPriceCondition {
+  __component: string;
+  id: number;
+  criterion: string;
+  value: string;
+}
+
+export interface ApiRate {
+  id: number;
+  documentId: string;
+  name: string;
+  price: number;
+  timeEstimation: number;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  locale: string | null;
+  conditions: ApiPriceCondition[];
+}
+
+export interface ApiService {
+  id: number;
+  documentId: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  locale: string | null;
+  criteriaOptions: {
+    [criterion: string]: Array<{ id: number; value: string }>;
+  };
+  rates: ApiRate[];
 }
 
 export interface Client {
@@ -38,6 +74,7 @@ export interface AppointmentData {
   date: Date | null;
   time: string | null;
   services: Service[];
+  selectedRate?: ApiRate;
   client: Client | null;
   notes: string;
 }
@@ -47,4 +84,4 @@ export interface StepProps {
   onUpdate: (data: Partial<AppointmentData>) => void;
   onBack?: () => void;
   onNext?: () => void;
-} 
+}
