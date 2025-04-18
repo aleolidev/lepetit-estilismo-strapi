@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useState } from 'react';
+import { createContext, ReactNode, useContext, useState, useEffect } from 'react';
 import { StaffMember, CalendarEvent } from '../types';
 import { useCalendarData } from '../hooks/use-calendar-data';
 
@@ -34,6 +34,13 @@ type CalendarProviderProps = {
 export const CalendarProvider = ({ children }: CalendarProviderProps) => {
   const [selectedStaff, setSelectedStaff] = useState('');
   const { staffMembers, events, isLoading, error } = useCalendarData();
+
+  // Select first staff member when data loads
+  useEffect(() => {
+    if (staffMembers.length > 0 && !selectedStaff) {
+      setSelectedStaff(staffMembers[0].id);
+    }
+  }, [staffMembers, selectedStaff]);
 
   // Context value
   const value = {

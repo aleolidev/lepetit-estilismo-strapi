@@ -10,24 +10,40 @@ interface CalendarHeaderProps {
   staffMembers: StaffMember[];
 }
 
-export const CalendarHeader = ({ selectedStaff, onStaffChange, staffMembers }: CalendarHeaderProps) => {
+export const CalendarHeader = ({
+  selectedStaff,
+  onStaffChange,
+  staffMembers,
+}: CalendarHeaderProps) => {
   const { formatMessage } = useIntl();
+  const hasStaff = staffMembers.length > 0;
+
+  const noStaffMessage = formatMessage({
+    id: getTranslation('select.no.staff'),
+    defaultMessage: 'No staff available',
+  });
+
+  const selectStaffMessage = formatMessage({
+    id: getTranslation('select.staff'),
+    defaultMessage: 'Select Staff',
+  });
 
   return (
     <Box paddingBottom={4}>
       <SingleSelect
-        label={formatMessage({ id: getTranslation('select.staff') })}
+        label={selectStaffMessage}
         value={selectedStaff}
         onChange={onStaffChange}
-        placeholder={formatMessage({ id: getTranslation('select.staff') })}
+        disabled={!hasStaff}
+        placeholder={hasStaff ? selectStaffMessage : noStaffMessage}
       >
-        <SingleSelectOption value="">{formatMessage({ id: getTranslation('select.all') })}</SingleSelectOption>
-        {staffMembers.map((staff) => (
-          <SingleSelectOption key={staff.id} value={staff.id}>
-            {staff.name}
-          </SingleSelectOption>
-        ))}
+        {hasStaff &&
+          staffMembers.map((staff) => (
+            <SingleSelectOption key={staff.id} value={staff.id}>
+              {staff.name}
+            </SingleSelectOption>
+          ))}
       </SingleSelect>
     </Box>
   );
-}; 
+};
