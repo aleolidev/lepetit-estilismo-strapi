@@ -158,7 +158,7 @@ export const getCalendarStyles = (theme: any) => {
     }
 
     .fc-timegrid-event {
-      overflow: visible !important;
+      overflow: hidden !important;
     }
 
     .fc-daygrid-day-events a,
