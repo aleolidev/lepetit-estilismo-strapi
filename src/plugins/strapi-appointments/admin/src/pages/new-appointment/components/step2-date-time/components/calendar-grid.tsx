@@ -14,6 +14,7 @@ interface CalendarGridProps {
   onDateClick: (info: any) => void;
   onEventDrop: (info: any) => void;
   renderEventContent: (eventInfo: any) => JSX.Element;
+  defaultEventDuration?: number; // Duration in minutes
 }
 
 export const CalendarGrid = ({
@@ -21,9 +22,42 @@ export const CalendarGrid = ({
   onDateClick,
   onEventDrop,
   renderEventContent,
+  defaultEventDuration = 60, // Default 1 hour appointments
 }: CalendarGridProps) => {
   const calendarRef = useRef(null);
   const theme = useTheme();
+
+  // Check if a time slot has overlapping appointments
+  const hasOverlappingAppointments = (start: Date, end: Date) => {
+    return events.some((event) => {
+      // Skip new-appointment in the collision check
+      if (event.id === 'new-appointment') return false;
+
+      const eventStart = new Date(event.start);
+      const eventEnd = new Date(event.end);
+
+      // Check for overlap
+      return start < eventEnd && end > eventStart;
+    });
+  };
+
+  // Handle date click with collision detection
+  const handleDateClick = (info: any) => {
+    const clickedDate = info.date;
+
+    // Calculate end time based on default duration
+    const startTime = new Date(clickedDate);
+    const endTime = new Date(startTime.getTime() + defaultEventDuration * 60 * 1000);
+
+    // Check for overlapping appointments
+    if (!hasOverlappingAppointments(startTime, endTime)) {
+      onDateClick(info);
+    } else {
+      // You could add a notification here to inform the user
+      console.warn('Cannot create appointment here: overlapping with existing appointment');
+      // Optionally, you could show a toast notification here
+    }
+  };
 
   return (
     <Box
@@ -40,7 +74,7 @@ export const CalendarGrid = ({
       <FullCalendar
         ref={calendarRef}
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-        initialView="timeGridDay"
+        initialView="timeGridWeek"
         headerToolbar={{
           left: 'prev,next today',
           center: 'title',
@@ -75,7 +109,7 @@ export const CalendarGrid = ({
         }))}
         eventContent={renderEventContent}
         eventDrop={onEventDrop}
-        dateClick={onDateClick}
+        dateClick={handleDateClick}
         selectable={true}
         nowIndicator={true}
         dayMaxEvents={true}
