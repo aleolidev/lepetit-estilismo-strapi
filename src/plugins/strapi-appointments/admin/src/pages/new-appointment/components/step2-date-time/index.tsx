@@ -61,21 +61,15 @@ const Step2DateTimeContent = ({
         />
       )}
 
-      {newAppointmentEvent && (
-        <Box paddingTop={4}>
-          <Typography variant="pi">
-            Appointment scheduled for: {newAppointmentEvent.start.toLocaleString()}
-          </Typography>
-        </Box>
-      )}
-
-      <Box display="flex" justifyContent="space-between">
-        <Button variant="tertiary" onClick={onBack} size="L">
-          Back
-        </Button>
-        <Button onClick={onNext} disabled={!isAppointmentScheduled} size="L">
-          Next
-        </Button>
+      <Box paddingTop={4}>
+        <Flex display="flex" justifyContent="end" gap={2}>
+          <Button variant="tertiary" onClick={onBack} size="L">
+            Back
+          </Button>
+          <Button onClick={onNext} disabled={!isAppointmentScheduled} size="L">
+            Next
+          </Button>
+        </Flex>
       </Box>
     </>
   );

@@ -77,7 +77,7 @@ export const CalendarGrid = ({
         allDaySlot={false}
         slotMinTime="08:00:00"
         slotMaxTime="20:00:00"
-        slotDuration="00:30:00"
+        slotDuration="01:00:00"
         slotLabelInterval="01:00"
         slotLabelFormat={{
           hour: 'numeric',

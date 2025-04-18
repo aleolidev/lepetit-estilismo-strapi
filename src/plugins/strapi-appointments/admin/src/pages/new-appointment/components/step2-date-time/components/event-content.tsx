@@ -5,15 +5,14 @@ export const renderEventContent = (eventInfo: any) => {
 
   return (
     <>
-      <div className="fc-event-time-row">
-        <span className="fc-event-time">{eventInfo.timeText}</span>
-        {clientName && <span className="fc-event-client-name">{clientName}</span>}
-        {isNew && <span className="fc-event-badge">NEW</span>}
-      </div>
+      {isNew && <span className="fc-event-new-badge">NEW</span>}
       <div className="fc-event-title-container">
         <div className="fc-event-title">
           <strong>{serviceName}</strong>
         </div>
+      </div>
+      <div className="fc-event-time-row">
+        <span className="fc-event-time">{eventInfo.timeText}</span>
       </div>
     </>
   );

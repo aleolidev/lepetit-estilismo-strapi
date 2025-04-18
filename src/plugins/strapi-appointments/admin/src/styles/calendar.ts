@@ -74,7 +74,7 @@ export const getCalendarStyles = (theme: any) => {
     }
 
     .fc-timegrid-slots tr {
-      height: 5em;
+      height: 4em;
     }
 
     .fc-daygrid-day-frame {
@@ -98,10 +98,18 @@ export const getCalendarStyles = (theme: any) => {
     }
 
     .fc-timegrid-event .fc-event-time {
-      font-size: 1.1em;
-      opacity: 0.9;
+      font-size: 12px;
+      letter-spacing: .1px;
+      line-height: 15px;
       white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -webkit-font-smoothing: antialiased;
       flex-shrink: 0;
+    }
+
+    .fc .fc-timegrid-slot-minor {
+      border-top-style: hidden !important;
     }
 
     .fc-event-client-name {
@@ -117,25 +125,28 @@ export const getCalendarStyles = (theme: any) => {
     }
 
     .fc-event-title {
-      font-size: 1.1em;
-      font-weight: 600;
-      word-wrap: break-word;
-      white-space: normal;
-      line-height: 1.3;
-      overflow-wrap: break-word;
+      font-size: 12px;
+      letter-spacing: .1px;
+      font-weight: 500;
+      line-height: 15px;
+      white-space: nowrap;
       overflow: hidden;
+      text-overflow: ellipsis;
+      -webkit-font-smoothing: antialiased;
     }
 
     .fc-event-title strong {
       text-overflow: ellipsis;
       overflow: hidden;
-      white-space: normal;
+      white-space: nowrap;
       display: block;
-      max-height: 2.6em; /* Approximately 2 lines of text */
     }
 
     /* Appointment badge */
-    .fc-event-badge {
+    .fc-event-new-badge {
+      position: absolute;
+      bottom: 0;
+      right: -.3em;
       background-color: white;
       color: ${theme.colors.primary500};
       padding: 2px 6px;
@@ -144,6 +155,7 @@ export const getCalendarStyles = (theme: any) => {
       font-weight: bold;
       white-space: nowrap;
       flex-shrink: 0;
+      z-index: 1;
     }
 
     /* Styling for new appointment in the appointment creation flow */
