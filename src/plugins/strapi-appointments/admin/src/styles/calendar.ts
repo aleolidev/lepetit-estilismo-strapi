@@ -2,11 +2,17 @@ import tinyColor from 'tinycolor2';
 
 export const getCalendarStyles = (theme: any) => {
   const primaryColor = theme.colors.primary500;
-  const lightPrimaryColor = theme.colors.primary700;
+  const eventBgColor = theme.colors.primary600;
   const bgButtonColor = theme.colors.neutral0;
   const hoverBgButtonColor = theme.colors.neutral100;
   const borderButtonColor = theme.colors.neutral200;
   const disabledBackgroundColor = theme.colors.danger500;
+
+  const tableBorderColor = tinyColor(theme.colors.neutral200)
+    .spin(5)
+    .saturate(3)
+    .darken(11)
+    .toHexString();
 
   const todayBgColor = tinyColor(primaryColor).spin(-1).desaturate(65).darken(46).toHexString();
   const disabledBgColor = tinyColor(disabledBackgroundColor)
@@ -17,6 +23,7 @@ export const getCalendarStyles = (theme: any) => {
 
   return `
     :root {
+      --fc-border-color: ${tableBorderColor};
       --fc-page-bg-color: transparent;
       --fc-button-bg-color: ${bgButtonColor};
       --fc-button-active-bg-color: ${primaryColor};
@@ -24,9 +31,8 @@ export const getCalendarStyles = (theme: any) => {
       --fc-button-hover-bg-color: ${hoverBgButtonColor};
       --fc-button-border-color: ${borderButtonColor};
       --fc-button-hover-border-color: ${borderButtonColor};
-      --fc-border-color: ${theme.colors.neutral200};
-      --fc-event-border-color: ${primaryColor};
-      --fc-event-bg-color: ${primaryColor};
+      --fc-event-border-color: ${eventBgColor};
+      --fc-event-bg-color: ${eventBgColor};
       --fc-event-text-color: ${theme.colors.neutral0};
       --fc-today-bg-color: ${tinyColor(primaryColor).setAlpha(0.1).toString()};
       --fc-disabled-bg-color: ${tinyColor(disabledBackgroundColor).setAlpha(0.1).toString()};
@@ -142,8 +148,8 @@ export const getCalendarStyles = (theme: any) => {
 
     /* Styling for new appointment in the appointment creation flow */
     .fc-event[data-event-id="new-appointment"] {
-      background-color: ${theme.colors.primary600} !important;
-      border-color: ${theme.colors.primary600} !important;
+      background-color: ${eventBgColor} !important;
+      border-color: ${eventBgColor} !important;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2) !important;
       cursor: move !important;
     }
@@ -177,11 +183,11 @@ export const getCalendarStyles = (theme: any) => {
 
     .fc-theme-standard td,
     .fc-theme-standard th {
-      border-color: ${theme.colors.neutral200} !important;
+      border-color: ${tableBorderColor} !important;
     }
 
     .fc-theme-standard .fc-scrollgrid {
-      border-color: ${theme.colors.neutral200} !important;
+      border-color: ${tableBorderColor} !important;
     }
 
     .fc-col-header-cell {
