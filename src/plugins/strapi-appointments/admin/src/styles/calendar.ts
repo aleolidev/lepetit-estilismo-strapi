@@ -105,8 +105,8 @@ export const getCalendarStyles = (theme: any) => {
 
     /* Appointment badge */
     .fc-event-badge {
-      background-color: ${theme.colors.danger100};
-      color: ${theme.colors.danger700};
+      background-color: white;
+      color: ${theme.colors.primary500};
       padding: 2px 6px;
       border-radius: 4px;
       font-size: 0.8em;
