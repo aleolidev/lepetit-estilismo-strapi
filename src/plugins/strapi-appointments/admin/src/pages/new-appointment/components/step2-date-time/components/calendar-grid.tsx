@@ -7,6 +7,7 @@ import { useRef } from 'react';
 import { useTheme } from 'styled-components';
 import { getCalendarStyles } from '../../../../../styles/calendar';
 import { Appointment } from '../../../contexts/staff-context';
+import { EventImpl } from '@fullcalendar/core/internal';
 
 interface CalendarGridProps {
   events: Appointment[];
@@ -93,6 +94,34 @@ export const CalendarGrid = ({
             const el = info.el as HTMLElement;
             el.style.cursor = 'default';
           }
+        }}
+        eventOverlap={false}
+        eventAllow={(dropInfo, draggedEvent) => {
+          // Don't allow drops on past dates
+          const now = new Date();
+          if (dropInfo.start < now) {
+            return false;
+          }
+
+          // Check for collisions with existing appointments
+          if (!draggedEvent) return false;
+          if (!draggedEvent.start || !draggedEvent.end) return false;
+
+          // Calculate end time based on event start and end times
+          const eventStart = dropInfo.start;
+          const eventEnd = new Date(
+            eventStart.getTime() + (draggedEvent.end.getTime() - draggedEvent.start.getTime())
+          );
+
+          const collidingEvents = events.filter(
+            (event) =>
+              event.id !== draggedEvent.id &&
+              event.id !== 'new-appointment' &&
+              eventStart < new Date(event.end) &&
+              eventEnd > new Date(event.start)
+          );
+
+          return collidingEvents.length === 0;
         }}
       />
     </Box>
