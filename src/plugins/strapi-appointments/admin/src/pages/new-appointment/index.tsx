@@ -53,7 +53,7 @@ const NewAppointmentContent = () => {
 
   return (
     <>
-      {/* <Layouts.Header
+      <Layouts.Header
         title={formatMessage({
           id: getTranslation('new-appointment.title'),
           defaultMessage: 'New Appointment',
@@ -63,22 +63,7 @@ const NewAppointmentContent = () => {
           defaultMessage: 'Create a new appointment by following the steps below',
         })}
         as="h2"
-      /> */}
-      <Layouts.Content>
-        <Box marginTop={10} marginBottom={10}>
-          <Flex direction="column" gap={1} alignItems="flex-start">
-            <Typography variant="alpha" as="h1">
-              New Appointment
-            </Typography>
-            <Typography variant="epsilon" as="h2">
-              {formatMessage({
-                id: getTranslation('new-appointment.subtitle'),
-                defaultMessage: 'Create a new appointment by following the steps below',
-              })}
-            </Typography>
-          </Flex>
-        </Box>
-      </Layouts.Content>
+      />
       <Layouts.Content>
         <Box padding={4} paddingTop={8} background="neutral100" shadow="filterShadow" hasRadius>
           <Stepper steps={steps} currentStep={activeStep} />

@@ -60,7 +60,7 @@ export const CalendarGrid = ({
   };
 
   return (
-    <Box>
+    <Box style={{ zIndex: 0, position: 'relative' }}>
       <style>{getCalendarStyles(theme)}</style>
       <FullCalendar
         ref={calendarRef}

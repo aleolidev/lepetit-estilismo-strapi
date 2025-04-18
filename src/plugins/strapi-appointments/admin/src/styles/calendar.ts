@@ -1,22 +1,29 @@
 import tinyColor from 'tinycolor2';
 
 export const getCalendarStyles = (theme: any) => {
-  const primaryColor = theme.colors.primary600;
-  const lightPrimaryColor = tinyColor(primaryColor).lighten().toString();
+  const primaryColor = theme.colors.primary500;
+  const lightPrimaryColor = theme.colors.primary700;
   const bgButtonColor = theme.colors.neutral0;
   const hoverBgButtonColor = theme.colors.neutral100;
   const borderButtonColor = theme.colors.neutral200;
   const disabledBackgroundColor = theme.colors.danger500;
 
+  const todayBgColor = tinyColor(primaryColor).spin(-1).desaturate(65).darken(46).toHexString();
+  const disabledBgColor = tinyColor(disabledBackgroundColor)
+    .spin(-47)
+    .desaturate(64)
+    .darken(47)
+    .toHexString();
+
   return `
     :root {
       --fc-page-bg-color: transparent;
       --fc-button-bg-color: ${bgButtonColor};
-      --fc-button-active-bg-color: ${lightPrimaryColor};
+      --fc-button-active-bg-color: ${primaryColor};
+      --fc-button-active-border-color: ${primaryColor};
       --fc-button-hover-bg-color: ${hoverBgButtonColor};
       --fc-button-border-color: ${borderButtonColor};
       --fc-button-hover-border-color: ${borderButtonColor};
-      --fc-button-active-border-color: ${borderButtonColor};
       --fc-border-color: ${theme.colors.neutral200};
       --fc-event-border-color: ${primaryColor};
       --fc-event-bg-color: ${primaryColor};
@@ -53,11 +60,11 @@ export const getCalendarStyles = (theme: any) => {
     }
 
     .fc-day-today {
-      background-color: ${tinyColor(primaryColor).setAlpha(0.1).toString()} !important;
+      background-color: ${todayBgColor} !important;
     }
 
     .fc-day-disabled {
-      background-color: ${tinyColor(disabledBackgroundColor).setAlpha(0.1).toString()} !important;
+      background-color: ${disabledBgColor} !important;
     }
 
     .fc-timegrid-slots tr {
