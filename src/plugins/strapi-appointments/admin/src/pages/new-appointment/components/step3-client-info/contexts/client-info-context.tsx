@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect, useRef } from 'react';
 import { AppointmentData, Client, StepProps } from '../../../types';
+import { useClientSearch } from '../../../hooks/use-client-search';
 
 // Context interface
 interface ClientInfoContextData {
@@ -7,13 +8,16 @@ interface ClientInfoContextData {
   setSearchQuery: (query: string) => void;
   selectedClient: Client | null;
   setSelectedClient: (client: Client | null) => void;
+  clients: Client[];
+  isLoadingClients: boolean;
+  clientError: Error | null;
   newClient: {
     name: string;
     phone: string;
     email: string;
   };
   handleNewClientChange: (field: 'name' | 'phone' | 'email', value: string) => void;
-  handleClientSelect: (client: Client) => void;
+  handleClientSelect: (client: Client | null) => void;
   handleCreateNewClient: () => void;
   notes: string;
   setNotes: (notes: string) => void;
@@ -22,6 +26,7 @@ interface ClientInfoContextData {
   isStepComplete: boolean;
   onSubmitAppointment: () => void;
   appointmentData: AppointmentData;
+  searchClients: (query: string) => Promise<void>;
 }
 
 // Create the context
@@ -42,14 +47,36 @@ export const ClientInfoProvider: React.FC<{
   });
   const [notes, setNotes] = useState(data.notes);
 
-  // Mock clients data - replace with actual data from your API
-  const clients: Client[] = [
-    { id: '1', name: 'John Doe', phone: '+1234567890', email: 'john@example.com' },
-    { id: '2', name: 'Jane Smith', phone: '+0987654321', email: 'jane@example.com' },
-  ];
+  // Use the client search hook
+  const {
+    clients,
+    isLoading: isLoadingClients,
+    error: clientError,
+    searchClients,
+  } = useClientSearch();
+
+  // Reference to track if this is the first render
+  const firstRender = useRef(true);
+
+  // Handle search query changes with proper debouncing
+  useEffect(() => {
+    // Skip the first render to avoid unnecessary API calls
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      searchClients(searchQuery);
+    }, 300); // Debounce search by 300ms
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [searchQuery, searchClients]);
 
   const handleClientSelect = useCallback(
-    (client: Client) => {
+    (client: Client | null) => {
       setSelectedClient(client);
       onUpdate({ client });
     },
@@ -83,7 +110,6 @@ export const ClientInfoProvider: React.FC<{
   const isStepComplete = selectedClient !== null;
 
   const onSubmitAppointment = useCallback(() => {
-    console.log('Submit appointment', data);
     // Here you would typically make an API call to create the appointment
   }, [data]);
 
@@ -92,6 +118,9 @@ export const ClientInfoProvider: React.FC<{
     setSearchQuery,
     selectedClient,
     setSelectedClient,
+    clients,
+    isLoadingClients,
+    clientError,
     newClient,
     handleNewClientChange,
     handleClientSelect,
@@ -103,6 +132,7 @@ export const ClientInfoProvider: React.FC<{
     isStepComplete,
     onSubmitAppointment,
     appointmentData: data,
+    searchClients,
   };
 
   return <ClientInfoContext.Provider value={value}>{children}</ClientInfoContext.Provider>;
