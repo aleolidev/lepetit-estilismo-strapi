@@ -1,11 +1,12 @@
 import { Box } from '@strapi/design-system';
 import { useIntl } from 'react-intl';
 import { getTranslation } from '../../utils/getTranslation';
-import { useState } from 'react';
+import { useCallback, useLayoutEffect, useState } from 'react';
 import { Layouts } from '@strapi/admin/strapi-admin';
 import { CalendarHeader } from './components/calendar-header';
 import { CalendarGrid } from './components/calendar-grid';
 import { StaffMember, CalendarEvent } from './types';
+import { query } from '../../utils/strapi';
 
 const CalendarPage = () => {
   const { formatMessage } = useIntl();
@@ -29,6 +30,14 @@ const CalendarPage = () => {
   const handleEventResize = (event: CalendarEvent) => {
     console.log('Event resized:', event);
   };
+
+  const getStaff = useCallback(() => query('/staff-with-appointments'), []);
+
+  useLayoutEffect(() => {
+    getStaff().then((res) => {
+      console.log(res);
+    });
+  }, [getStaff]);
 
   return (
     <>
