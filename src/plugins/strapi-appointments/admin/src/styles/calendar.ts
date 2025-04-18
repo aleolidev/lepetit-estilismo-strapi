@@ -3,22 +3,26 @@ import tinyColor from 'tinycolor2';
 export const getCalendarStyles = (theme: any) => {
   const primaryColor = theme.colors.primary600;
   const lightPrimaryColor = tinyColor(primaryColor).lighten().toString();
-  const disabledBackgroundColor = theme.colors.neutral200;
+  const bgButtonColor = theme.colors.neutral0;
+  const hoverBgButtonColor = theme.colors.neutral100;
+  const borderButtonColor = theme.colors.neutral200;
+  const disabledBackgroundColor = theme.colors.danger500;
 
   return `
     :root {
       --fc-page-bg-color: transparent;
-      --fc-button-bg-color: ${primaryColor};
+      --fc-button-bg-color: ${bgButtonColor};
       --fc-button-active-bg-color: ${lightPrimaryColor};
-      --fc-button-hover-bg-color: ${lightPrimaryColor};
-      --fc-button-border-color: ${theme.colors.neutral200};
-      --fc-button-active-border-color: ${theme.colors.neutral200};
+      --fc-button-hover-bg-color: ${hoverBgButtonColor};
+      --fc-button-border-color: ${borderButtonColor};
+      --fc-button-hover-border-color: ${borderButtonColor};
+      --fc-button-active-border-color: ${borderButtonColor};
       --fc-border-color: ${theme.colors.neutral200};
       --fc-event-border-color: ${primaryColor};
       --fc-event-bg-color: ${primaryColor};
       --fc-event-text-color: ${theme.colors.neutral0};
       --fc-today-bg-color: ${tinyColor(primaryColor).setAlpha(0.1).toString()};
-      --fc-disabled-bg-color: ${disabledBackgroundColor};
+      --fc-disabled-bg-color: ${tinyColor(disabledBackgroundColor).setAlpha(0.1).toString()};
     }
 
     .fc {
@@ -33,13 +37,27 @@ export const getCalendarStyles = (theme: any) => {
       font-weight: bold !important;
     }
 
+    .fc-button-group {
+      gap: 0.5rem !important;
+    }
+
     .fc-button {
-      padding: 0.6em 1.2em !important;
+      height: 4rem !important;
+      padding: 0rem 1rem !important;
       border-radius: ${theme.borderRadius} !important;
+      transition: all 0.1s ease-in-out !important;
+    }
+
+    .fc-button > span.fc-icon {
+      vertical-align: baseline !important;
     }
 
     .fc-day-today {
       background-color: ${tinyColor(primaryColor).setAlpha(0.1).toString()} !important;
+    }
+
+    .fc-day-disabled {
+      background-color: ${tinyColor(disabledBackgroundColor).setAlpha(0.1).toString()} !important;
     }
 
     .fc-timegrid-slots tr {
