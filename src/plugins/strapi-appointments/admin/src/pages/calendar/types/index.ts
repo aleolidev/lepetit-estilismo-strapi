@@ -9,7 +9,22 @@ export interface CalendarEvent {
   start: Date;
   end: Date;
   staffId?: string;
-  // Add more event properties as needed
+  extendedProps?: {
+    client?: {
+      id: string | number;
+      name: string;
+      phone?: string;
+      email?: string | null;
+    } | null;
+    service?: {
+      id: string | number;
+      name: string;
+      price?: number;
+      timeEstimation?: number;
+    } | null;
+    notes?: string | null;
+    [key: string]: any;
+  };
 }
 
 export interface CalendarProps {

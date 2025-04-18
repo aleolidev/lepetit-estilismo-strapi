@@ -76,9 +76,7 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
         })
       );
 
-      return {
-        data: staffWithAppointments,
-      };
+      return staffWithAppointments;
     } catch (error) {
       ctx.throw(500, 'Error fetching staff members with appointments');
     }

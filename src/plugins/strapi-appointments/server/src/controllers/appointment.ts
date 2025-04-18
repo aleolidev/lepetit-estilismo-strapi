@@ -45,9 +45,7 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
           },
         });
 
-      return {
-        data: appointments,
-      };
+      return appointments;
     } catch (error) {
       ctx.throw(500, 'Error fetching appointments');
     }

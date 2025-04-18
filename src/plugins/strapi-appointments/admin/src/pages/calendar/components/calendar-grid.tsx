@@ -32,6 +32,7 @@ export const CalendarGrid = ({
         start: info.event.start,
         end: info.event.end,
         staffId: info.event.extendedProps.staffId,
+        extendedProps: info.event.extendedProps,
       };
       onEventClick(event);
     }
@@ -45,6 +46,7 @@ export const CalendarGrid = ({
         start: info.event.start,
         end: info.event.end,
         staffId: info.event.extendedProps.staffId,
+        extendedProps: info.event.extendedProps,
       };
       onEventDrop(event);
     }
@@ -58,9 +60,30 @@ export const CalendarGrid = ({
         start: info.event.start,
         end: info.event.end,
         staffId: info.event.extendedProps.staffId,
+        extendedProps: info.event.extendedProps,
       };
       onEventResize(event);
     }
+  };
+
+  // Event render function to customize event display
+  const renderEventContent = (eventInfo: any) => {
+    const serviceName = eventInfo.event.extendedProps?.service?.name;
+    const clientName = eventInfo.event.extendedProps?.client?.name;
+
+    return (
+      <>
+        <div className="fc-event-time-row">
+          <span className="fc-event-time">{eventInfo.timeText}</span>
+          {clientName && <span className="fc-event-client-name">{clientName}</span>}
+        </div>
+        <div className="fc-event-title-container">
+          <div className="fc-event-title">
+            <strong>{serviceName || 'Service'}</strong>
+          </div>
+        </div>
+      </>
+    );
   };
 
   return (
@@ -82,18 +105,27 @@ export const CalendarGrid = ({
         headerToolbar={{
           left: 'prev,next today',
           center: 'title',
-          right: 'dayGridMonth,timeGridWeek,timeGridDay'
+          right: 'dayGridMonth,timeGridWeek,timeGridDay',
         }}
         height="auto"
+        contentHeight="auto"
+        aspectRatio={1.65}
         allDaySlot={false}
         slotMinTime="08:00:00"
         slotMaxTime="20:00:00"
+        slotDuration="00:30:00"
+        slotLabelInterval="01:00"
         weekends={true}
         events={events}
+        eventContent={renderEventContent}
         eventClick={handleEventClick}
         eventDrop={handleEventDrop}
         eventResize={handleEventResize}
+        editable={true}
+        selectable={true}
+        nowIndicator={true}
+        dayMaxEvents={true}
       />
     </Box>
   );
-}; 
+};

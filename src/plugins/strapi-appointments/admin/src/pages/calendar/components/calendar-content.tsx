@@ -7,12 +7,21 @@ import { useCalendarContext } from '../contexts/calendar-context';
 import { CalendarHeader } from './calendar-header';
 import { CalendarGrid } from './calendar-grid';
 import { useCalendarEvents } from '../hooks/use-calendar-events';
+import { useMemo } from 'react';
 
 export const CalendarContent = () => {
   const { formatMessage } = useIntl();
   const { staffMembers, events, selectedStaff, setSelectedStaff, isLoading } = useCalendarContext();
 
   const { handleEventClick, handleEventDrop, handleEventResize } = useCalendarEvents();
+
+  // Filter events by selected staff
+  const filteredEvents = useMemo(() => {
+    if (!selectedStaff) {
+      return events; // Show all events if no staff is selected
+    }
+    return events.filter((event) => event.staffId === selectedStaff);
+  }, [events, selectedStaff]);
 
   if (isLoading) return <Page.Loading />;
 
@@ -34,7 +43,7 @@ export const CalendarContent = () => {
             staffMembers={staffMembers}
           />
           <CalendarGrid
-            events={events}
+            events={filteredEvents}
             onEventClick={handleEventClick}
             onEventDrop={handleEventDrop}
             onEventResize={handleEventResize}
