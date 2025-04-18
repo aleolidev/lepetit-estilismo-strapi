@@ -2,6 +2,7 @@ import contentApi from './content-api';
 import staff from './staff';
 import appointment from './appointment';
 import rate from './rate';
+import client from './client';
 
 export default {
   'content-api': {
@@ -10,7 +11,7 @@ export default {
   },
   admin: {
     type: 'admin',
-    routes: [...staff, ...appointment, ...rate],
+    routes: [...staff, ...appointment, ...rate, ...client],
   },
 };
 
