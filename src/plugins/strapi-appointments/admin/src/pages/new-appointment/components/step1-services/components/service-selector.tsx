@@ -1,31 +1,31 @@
-import { Box, Typography, SingleSelect, SingleSelectOption } from '@strapi/design-system';
+import { Box, Typography, MultiSelect, MultiSelectOption } from '@strapi/design-system';
 import { Service } from '../../../contexts/services-context';
 
 interface ServiceSelectorProps {
   services: Service[] | undefined;
-  selectedServiceId: string;
-  onServiceChange: (serviceId: string) => void;
+  selectedServiceIds: string[];
+  onServiceChange: (serviceIds: string[]) => void;
 }
 
 export const ServiceSelector = ({
   services = [],
-  selectedServiceId,
+  selectedServiceIds,
   onServiceChange,
 }: ServiceSelectorProps) => {
   return (
     <Box marginBottom={4} marginTop={4}>
-      <SingleSelect
-        label="Service"
-        placeholder="Select a service"
-        value={selectedServiceId}
+      <MultiSelect
+        label="Services"
+        placeholder="Select services"
+        value={selectedServiceIds}
         onChange={onServiceChange}
       >
         {services.map((service) => (
-          <SingleSelectOption key={service.id} value={String(service.id)}>
+          <MultiSelectOption key={service.id} value={String(service.id)}>
             {service.name}
-          </SingleSelectOption>
+          </MultiSelectOption>
         ))}
-      </SingleSelect>
+      </MultiSelect>
     </Box>
   );
 };

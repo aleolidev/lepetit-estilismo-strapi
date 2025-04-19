@@ -48,12 +48,16 @@ type ServicesContextState = {
   servicesData: ServicesData | null;
   isLoading: boolean;
   error: Error | null;
-  selectedService: Service | null;
-  setSelectedService: (service: Service | null) => void;
-  selectedCriteria: { [criterion: string]: string };
-  setSelectedCriteria: (criteria: { [criterion: string]: string }) => void;
-  selectedRate: Rate | null;
-  setSelectedRate: (rate: Rate | null) => void;
+  selectedServices: Map<number, Service>;
+  setSelectedServices: (services: Map<number, Service>) => void;
+  addSelectedService: (service: Service) => void;
+  removeSelectedService: (serviceId: number) => void;
+  selectedCriteria: Map<number, { [criterion: string]: string }>;
+  setSelectedCriteria: (serviceId: number, criteria: { [criterion: string]: string }) => void;
+  selectedRates: Map<number, Rate>;
+  setSelectedRate: (serviceId: number, rate: Rate | null) => void;
+  getTotalEstimatedTime: () => number;
+  getTotalEstimatedPrice: () => number;
 };
 
 // Create the context with default values
@@ -61,12 +65,16 @@ const ServicesContext = createContext<ServicesContextState>({
   servicesData: null,
   isLoading: false,
   error: null,
-  selectedService: null,
-  setSelectedService: () => {},
-  selectedCriteria: {},
+  selectedServices: new Map(),
+  setSelectedServices: () => {},
+  addSelectedService: () => {},
+  removeSelectedService: () => {},
+  selectedCriteria: new Map(),
   setSelectedCriteria: () => {},
-  selectedRate: null,
+  selectedRates: new Map(),
   setSelectedRate: () => {},
+  getTotalEstimatedTime: () => 0,
+  getTotalEstimatedPrice: () => 0,
 });
 
 // Custom hook to use the services context
@@ -79,17 +87,90 @@ type ServicesProviderProps = {
 
 // Services provider component
 export const ServicesProvider = ({ children }: ServicesProviderProps) => {
-  const [selectedService, setSelectedService] = useState<Service | null>(null);
-  const [selectedCriteria, setSelectedCriteria] = useState<{ [criterion: string]: string }>({});
-  const [selectedRate, setSelectedRate] = useState<Rate | null>(null);
+  const [selectedServices, setSelectedServices] = useState<Map<number, Service>>(new Map());
+  const [selectedCriteria, setSelectedCriteria] = useState<
+    Map<number, { [criterion: string]: string }>
+  >(new Map());
+  const [selectedRates, setSelectedRates] = useState<Map<number, Rate>>(new Map());
 
   const { servicesData, isLoading, error } = useServicesData();
 
-  // Reset criteria when service changes
-  const handleSelectService = (service: Service | null) => {
-    setSelectedService(service);
-    setSelectedCriteria({});
-    setSelectedRate(null);
+  // Add a selected service
+  const addSelectedService = (service: Service) => {
+    setSelectedServices((prev) => {
+      const newMap = new Map(prev);
+      newMap.set(service.id, service);
+      return newMap;
+    });
+  };
+
+  // Remove a selected service
+  const removeSelectedService = (serviceId: number) => {
+    setSelectedServices((prev) => {
+      const newMap = new Map(prev);
+      newMap.delete(serviceId);
+      return newMap;
+    });
+
+    // Also remove any criteria and rates for this service
+    setSelectedCriteria((prev) => {
+      const newMap = new Map(prev);
+      newMap.delete(serviceId);
+      return newMap;
+    });
+
+    setSelectedRates((prev) => {
+      const newMap = new Map(prev);
+      newMap.delete(serviceId);
+      return newMap;
+    });
+  };
+
+  // Set criteria for a specific service
+  const handleSetSelectedCriteria = (
+    serviceId: number,
+    criteria: { [criterion: string]: string }
+  ) => {
+    setSelectedCriteria((prev) => {
+      const newMap = new Map(prev);
+      newMap.set(serviceId, criteria);
+      return newMap;
+    });
+  };
+
+  // Set rate for a specific service
+  const handleSetSelectedRate = (serviceId: number, rate: Rate | null) => {
+    setSelectedRates((prev) => {
+      const newMap = new Map(prev);
+      if (rate) {
+        newMap.set(serviceId, rate);
+      } else {
+        newMap.delete(serviceId);
+      }
+      return newMap;
+    });
+  };
+
+  // Calculate total estimated time from all selected rates
+  const getTotalEstimatedTime = () => {
+    let total = 0;
+    selectedRates.forEach((rate) => {
+      total += rate.timeEstimation;
+    });
+    return total;
+  };
+
+  // Calculate total estimated price from all selected rates
+  const getTotalEstimatedPrice = () => {
+    let total = 0;
+    selectedRates.forEach((rate) => {
+      // Calculate price based on hourly rate and time
+      const hourlyRate = rate.price;
+      const timeEstimation = rate.timeEstimation;
+      const hours = timeEstimation / 60;
+      total += hourlyRate * hours;
+    });
+    return total;
   };
 
   // Context value
@@ -97,12 +178,16 @@ export const ServicesProvider = ({ children }: ServicesProviderProps) => {
     servicesData,
     isLoading,
     error,
-    selectedService,
-    setSelectedService: handleSelectService,
+    selectedServices,
+    setSelectedServices,
+    addSelectedService,
+    removeSelectedService,
     selectedCriteria,
-    setSelectedCriteria,
-    selectedRate,
-    setSelectedRate,
+    setSelectedCriteria: handleSetSelectedCriteria,
+    selectedRates,
+    setSelectedRate: handleSetSelectedRate,
+    getTotalEstimatedTime,
+    getTotalEstimatedPrice,
   };
 
   return <ServicesContext.Provider value={value}>{children}</ServicesContext.Provider>;

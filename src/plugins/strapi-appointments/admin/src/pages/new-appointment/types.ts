@@ -75,6 +75,7 @@ export interface AppointmentData {
   time: string | null;
   services: Service[];
   selectedRate?: ApiRate;
+  selectedRates?: ApiRate[];
   client: Client | null;
   notes: string;
   clientSearchQuery?: string;
