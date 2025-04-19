@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Box,
   Typography,
@@ -20,6 +20,8 @@ import { Card } from '@strapi/design-system';
 export const ClientSelector = () => {
   // Get context values
   const {
+    searchQuery,
+    setSearchQuery,
     selectedClient,
     clients,
     isLoadingClients,
@@ -32,13 +34,10 @@ export const ClientSelector = () => {
     searchClients,
   } = useClientInfoContext();
 
-  // Local state for search input
-  const [searchText, setSearchText] = useState('');
-
   // Handle search input changes
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const text = e.target.value;
-    setSearchText(text);
+    setSearchQuery(text);
 
     // Only search if text is at least 3 characters
     if (text.length >= 3) {
@@ -70,9 +69,9 @@ export const ClientSelector = () => {
             <Box padding={4}>
               <Field.Root>
                 <Searchbar
-                  value={searchText}
+                  value={searchQuery}
                   onChange={handleSearchChange}
-                  onClear={() => setSearchText('')}
+                  onClear={() => setSearchQuery('')}
                   placeholder="Search by name, phone or email..."
                 />
               </Field.Root>
@@ -84,7 +83,7 @@ export const ClientSelector = () => {
                   isLoadingClients={isLoadingClients}
                   clientError={clientError}
                   clients={clients}
-                  searchText={searchText}
+                  searchText={searchQuery}
                   handleSelectClient={handleSelectClient}
                 />
               </Box>

@@ -18,6 +18,14 @@ export const useAppointmentTime = ({ initialData, onUpdate }: UseAppointmentTime
   const [selectedStaff, setSelectedStaff] = useState<string>(initialData.staff?.id || '');
   const [newAppointmentEvent, setNewAppointmentEvent] = useState<AppointmentEvent | null>(null);
 
+  // Calculate duration based on selected services
+  const calculateDuration = useCallback(() => {
+    if (!initialData.services || initialData.services.length === 0) return 60; // Default duration
+    return initialData.services.reduce((total, service) => total + service.duration, 0);
+  }, [initialData.services]);
+
+  const appointmentDuration = calculateDuration();
+
   // Auto-select first staff member if none is selected and staff data is loaded
   useEffect(() => {
     if (!selectedStaff && staffMembers.length > 0) {
@@ -27,13 +35,38 @@ export const useAppointmentTime = ({ initialData, onUpdate }: UseAppointmentTime
     }
   }, [selectedStaff, staffMembers, onUpdate]);
 
-  // Calculate duration based on selected services
-  const calculateDuration = useCallback(() => {
-    if (!initialData.services || initialData.services.length === 0) return 60; // Default duration
-    return initialData.services.reduce((total, service) => total + service.duration, 0);
-  }, [initialData.services]);
+  // Recreate appointment event when revisiting this step
+  useEffect(() => {
+    if (initialData.date && initialData.time && initialData.staff && !newAppointmentEvent) {
+      const date = new Date(initialData.date);
+      const endDate = new Date(date);
+      endDate.setMinutes(date.getMinutes() + calculateDuration());
 
-  const appointmentDuration = calculateDuration();
+      const newEvent: AppointmentEvent = {
+        id: 'new-appointment',
+        title: 'New Appointment',
+        start: date,
+        end: endDate,
+        staffId: initialData.staff.id,
+        extendedProps: {
+          isNew: true,
+          service: {
+            id: 'new-service',
+            documentId: 'new-service',
+            name: initialData.services.map((s) => s.name).join(', '),
+            price: initialData.services.reduce((total, service) => total + (service.price || 0), 0),
+            timeEstimation: calculateDuration(),
+          },
+        },
+        backgroundColor: '#4945ff',
+        borderColor: '#4945ff',
+        isNew: true,
+      };
+
+      setNewAppointmentEvent(newEvent);
+      setSelectedStaff(initialData.staff.id);
+    }
+  }, [initialData, calculateDuration]);
 
   // Handle staff selection
   const handleStaffChange = useCallback(

@@ -38,7 +38,8 @@ export const ClientInfoProvider: React.FC<{
   data: AppointmentData;
   onUpdate: (data: Partial<AppointmentData>) => void;
 }> = ({ children, data, onUpdate }) => {
-  const [searchQuery, setSearchQuery] = useState('');
+  // Store search query in parent state for persistence
+  const [searchQuery, setSearchQuery] = useState<string>(data.clientSearchQuery || '');
   const [selectedClient, setSelectedClient] = useState<Client | null>(data.client);
   const [newClient, setNewClient] = useState({
     name: '',
@@ -47,33 +48,83 @@ export const ClientInfoProvider: React.FC<{
   });
   const [notes, setNotes] = useState(data.notes);
 
+  // State to hold combined clients (from hook + stored results)
+  const [clients, setClients] = useState<Client[]>(data.clientSearchResults || []);
+
+  // Track if we already have cached results to avoid showing loader
+  const hasCachedResults = useRef(!!data.clientSearchResults?.length);
+
+  // Custom loading state to prevent flicker
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   // Use the client search hook
   const {
-    clients,
-    isLoading: isLoadingClients,
+    clients: searchResultClients,
+    isLoading: hookIsLoading,
     error: clientError,
-    searchClients,
+    searchClients: performClientSearch,
   } = useClientSearch();
 
   // Reference to track if this is the first render
   const firstRender = useRef(true);
+
+  // Custom searchClients function that updates parent state and handles loading
+  const searchClients = useCallback(
+    async (query: string) => {
+      // Only show loading state if we don't have cached results
+      if (!hasCachedResults.current) {
+        setIsLoading(true);
+      }
+
+      await performClientSearch(query);
+
+      // Set cached results to false since we're doing a fresh search
+      hasCachedResults.current = false;
+    },
+    [performClientSearch]
+  );
+
+  // Update clients when search results change
+  useEffect(() => {
+    if (searchResultClients.length > 0 || !hasCachedResults.current) {
+      setClients(searchResultClients);
+    }
+
+    // Always turn off loading
+    setIsLoading(false);
+
+    // Store clients in parent state for persistence
+    if (searchResultClients.length > 0) {
+      onUpdate({ clientSearchResults: searchResultClients });
+    }
+  }, [searchResultClients, onUpdate]);
 
   // Handle search query changes with proper debouncing
   useEffect(() => {
     // Skip the first render to avoid unnecessary API calls
     if (firstRender.current) {
       firstRender.current = false;
+
+      // If we already have a search query but no cached results, search with it
+      if (searchQuery && searchQuery.length >= 3 && !hasCachedResults.current) {
+        searchClients(searchQuery);
+      }
       return;
     }
 
+    // Store query in parent state for persistence
+    onUpdate({ clientSearchQuery: searchQuery });
+
     const timer = setTimeout(() => {
-      searchClients(searchQuery);
+      if (searchQuery && searchQuery.length >= 3) {
+        searchClients(searchQuery);
+      }
     }, 300); // Debounce search by 300ms
 
     return () => {
       clearTimeout(timer);
     };
-  }, [searchQuery, searchClients]);
+  }, [searchQuery, searchClients, onUpdate]);
 
   const handleClientSelect = useCallback(
     (client: Client | null) => {
@@ -119,7 +170,7 @@ export const ClientInfoProvider: React.FC<{
     selectedClient,
     setSelectedClient,
     clients,
-    isLoadingClients,
+    isLoadingClients: isLoading,
     clientError,
     newClient,
     handleNewClientChange,

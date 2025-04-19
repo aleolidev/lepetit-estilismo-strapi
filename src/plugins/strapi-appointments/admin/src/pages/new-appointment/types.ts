@@ -77,6 +77,8 @@ export interface AppointmentData {
   selectedRate?: ApiRate;
   client: Client | null;
   notes: string;
+  clientSearchQuery?: string;
+  clientSearchResults?: Client[];
 }
 
 export interface StepProps {
